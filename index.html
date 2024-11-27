@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarMarket</title>
+    <link rel="stylesheet" href="style.css">
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="CarMarket">
+                <h1>CarMarket</h1>
+            </div>
+            <div class="links">
+                <ul>
+                    <li><a class="active" href="#">Compra</a></li>
+                    <li><a href="#">Vende</a></li>
+                    <li><a href="#">Cambia</a></li>
+                    <li><a href="#" id="chatbotBtn">AutoGenio</a></li>
+                    <li><a href="#" id="loginBtn">Inicia Sesion</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="home-content">
+            <div class="Home-container">
+                <h1>Bienvenido a CarMarket</h1>
+                <p>En CarMarket, ¡tu viaje hacia el auto de tus sueños comienza aquí! Ofrecemos una plataforma dinámica donde puedes comprar, vender y cambiar tu vehículo con otros entusiastas del mundo automotriz.</p>
+                <button id="try-now">Inicia sesión</button>
+                <button id="explore">Regístrate</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLogin">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" required><br><br>
+
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" required><br><br>
+
+                <button type="submit">Entrar</button>
+                <p>No tienes una cuenta? <a href="#" id="registerLink">Click aquí.</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeRegister">&times;</span>
+            <h2>Registrarse</h2>
+            <form id="registerForm">
+                <label for="email">Correo:</label>
+                <input type="email" id="email" required><br><br>
+
+                <label for="firstName">Nombres:</label>
+                <input type="text" id="firstName" required><br><br>
+
+                <label for="lastName">Apellidos:</label>
+                <input type="text" id="lastName" required><br><br>
+
+                <label for="phone">Número de celular:</label>
+                <input type="tel" id="phone" required><br><br>
+
+                <label for="regPassword">Contraseña:</label>
+                <input type="password" id="regPassword" required><br><br>
+
+                <label for="confirmPassword">Verificación de contraseña:</label>
+                <input type="password" id="confirmPassword" required><br><br>
+
+                <button type="submit">Registrarse</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="chatbotModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeChatbot">&times;</span>
+            <h2>AutoGenio</h2>
+            <div id="chatbox">
+                <div id="messages"></div>
+            </div>
+            <input type="text" id="userInput" placeholder="Escribe tu pregunta..." />
+            <button id="sendBtn">Enviar</button>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle modal functionality -->
+    <script>
+        // Get modal elements
+        var loginModal = document.getElementById("loginModal");
+        var registerModal = document.getElementById("registerModal");
+        var chatbotModal = document.getElementById("chatbotModal");
+
+        // Get buttons that open the modals
+        var loginBtn = document.getElementById("loginBtn");
+        var tryNowBtn = document.getElementById("try-now");
+        var exploreBtn = document.getElementById("explore");
+        var chatbotBtn = document.getElementById("chatbotBtn");
+
+        // Get the elements that close the modals
+        var closeLogin = document.getElementById("closeLogin");
+        var closeRegister = document.getElementById("closeRegister");
+        var closeChatbot = document.getElementById("closeChatbot");
+
+        // Open login modal from Try Now button
+        tryNowBtn.onclick = function() {
+            loginModal.style.display = "block";
+        }
+
+        // Open registration modal from Explore button
+        exploreBtn.onclick = function() {
+            registerModal.style.display = "block";
+        }
+
+        // Open login modal from login button in nav
+        loginBtn.onclick = function() {
+            loginModal.style.display = "block";
+        }
+
+        // Open chatbot modal
+        chatbotBtn.onclick = function() {
+            chatbotModal.style.display = "block";
+        }
+
+        // Open registration modal from login
+        document.getElementById("registerLink").onclick = function() {
+            loginModal.style.display = "none";
+            registerModal.style.display = "block";
+        }
+
+        // Close modals
+        closeLogin.onclick = function() {
+            loginModal.style.display = "none";
+        }
+        
+        closeRegister.onclick = function() {
+            registerModal.style.display = "none";
+        }
+        
+        closeChatbot.onclick = function() {
+            chatbotModal.style.display = "none";
+        }
+
+       // Close modals when clicking outside of them
+       window.onclick = function(event) {
+           if (event.target == loginModal) {
+               loginModal.style.display = "none";
+           } else if (event.target == registerModal) {
+               registerModal.style.display = "none";
+           } else if (event.target == chatbotModal) {
+               chatbotModal.style.display = "none";
+           }
+       }
+
+       // Handle sending messages in the chatbot
+       document.getElementById("sendBtn").onclick = function() {
+           var userInput = document.getElementById("userInput").value;
+           var messagesDiv = document.getElementById("messages");
+
+           if (userInput.trim() !== "") { // Display user message
+               messagesDiv.innerHTML += "<p><strong>Tú:</strong> " + userInput + "</p>";
+               
+               // Simple bot response logic
+               var botResponse = getBotResponse(userInput);
+               messagesDiv.innerHTML += "<p><strong>Bot:</strong> " + botResponse + "</p>";
+
+               // Clear input
+               document.getElementById("userInput").value = "";
+
+               // Scroll to bottom of chatbox
+               messagesDiv.scrollTop = messagesDiv.scrollHeight;
+           }
+       };
+
+       // Simple function to get bot responses
+function getBotResponse(input) {
+    input = input.toLowerCase();
+    
+    if (input.includes("Comprar")) {
+        return "¿Que nesesitas saber sobre la compra de vehiculos?, te puedo asesorar sobre algunas marcas y fichas tecnicas de carros.";
+    } else if (input.includes("Inica Sesion")) {
+        return "El botón de 'Iniciar sesión' abre un modal para ingresar con tu usuario ya creado. Si aún no tienes un usuario, puedes registrarte haciendo clic en el botón de 'Registrarse'.";
+    } else if (input.includes("registrar")) {
+        return "El botón de 'Registrarse' abre un modal para crear una nueva cuenta. Te pedirá tus datos personales como nombre, correo electrónico y contraseña.";
+    } else if (input.includes("AutoGenio")) {
+        return "¡Estás hablando conmigo! Estoy aquí para ayudarte con información sobre autos, marcas, precios y más. ¿En qué puedo asistirte hoy?";
+    } else if (input.includes("marcas de carros")) {
+        return "Existen muchas marcas de carros populares como Toyota, Ford, BMW, y Mercedes-Benz. ¿Te gustaría saber más sobre alguna en particular?";
+    } else if (input.includes("precios de autos")) {
+        return "Los precios de autos pueden variar ampliamente dependiendo de la marca, modelo y año. ¿Tienes algún modelo específico en mente del que te gustaría saber el precio?";
+    } else if (input.includes("ficha técnica")) {
+        return "Las fichas técnicas de los autos incluyen información como el tipo de motor, potencia, consumo de combustible y características de seguridad. ¿Te gustaría saber la ficha técnica de algún modelo en particular?";
+    } else if (input.includes("modelos disponibles")) {
+        return "Hay muchos modelos disponibles en el mercado actual. ¿Buscas algún tipo específico de auto, como sedán, SUV o deportivo?";
+    } else if (input.includes("financiamiento")) {
+        return "Ofrecemos diferentes opciones de financiamiento para la compra de vehículos. ¿Te gustaría conocer más sobre las opciones disponibles?";
+    } else {
+        return "Lo siento, no entiendo tu pregunta. Intenta preguntar sobre 'código', 'login', 'registro', 'chatbot', 'marcas de carros', 'precios de autos' o 'ficha técnica'.";
+    }
+}
+   </script>
+</body>
+</html>
